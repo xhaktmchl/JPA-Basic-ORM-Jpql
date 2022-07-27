@@ -19,6 +19,11 @@ public class Member {
 
     /*연관간계 편의 메서드*/
 
+    public void changeTeam(Team team){
+        this.team = team;
+        team.getMembers().add(this);
+    }
+
     public Long getId() {
         return id;
     }

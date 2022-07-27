@@ -15,10 +15,16 @@ public class JpaMain {
         tx.begin();
 
         try{
+            Team team = new Team();
+            team.setName("team1");
+            em.persist(team);
+
             System.out.println("====1");
             Member m1 = new Member();
             m1.setUsername("member1");
             m1.setAge(20);
+            m1.setTeam(team);
+
             em.persist(m1);
             System.out.println("====1");
             em.flush();
@@ -91,6 +97,48 @@ public class JpaMain {
             for(Member m: result7){
                 System.out.println("member = " + m.getUsername());
             }
+
+
+            /*
+            조인
+            * */
+            //1.내부조인
+            System.out.println("====1.내부조인");
+            List<Member> result8 = em.createQuery("select m from Member as m inner join m.team as t where t.name = :teamName",Member.class)
+                    .setParameter("teamName", "team1")
+                    .getResultList();
+            System.out.println(result8.get(0).getTeam());
+
+            //2.외부조인
+            //outer 생략가능
+            List<Member> result9 = em.createQuery("select m from Member as m left join m.team t where t.name = :teamName",Member.class)
+                    .setParameter("teamName", "team1")
+                    .getResultList();
+            System.out.println(result9.get(0).getTeam());
+
+            //3.세타 조인
+
+            System.out.println("====3.세타 조인");
+            List<Member> result10 = em.createQuery("select m from Member m, Team t where m.username = t.name",Member.class)
+                    .getResultList();
+            //System.out.println(result10.get(0).getTeam()); null값 이면 에러남
+
+
+            /*
+            조인 필터링
+             */
+            //1.조인 대상 필터링
+            System.out.println("====1.조인 대상 필터링");
+            List<Member> result11 = em.createQuery("select m from Member m left join m.team t on t.name = 'team1'",Member.class)
+                    .getResultList();
+            System.out.println(result11.get(0).getTeam());
+
+            //2.연관관계 없는 엔티티 외부조인
+            // Team 외부 엔티티 자체를 조인함
+            System.out.println("====2.연관관계 없는 엔티티 외부조인");
+            List<Member> result12 = em.createQuery("select m from Member m left join Team t on m.username = t.name",Member.class)
+                    .getResultList();
+            System.out.println(result12.get(0).getTeam());
 
 
             // 쓰기지연 sql 저장소에 모든 sql 실행
