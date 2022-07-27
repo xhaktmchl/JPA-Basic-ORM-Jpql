@@ -140,6 +140,18 @@ public class JpaMain {
                     .getResultList();
             System.out.println(result12.get(0).getTeam());
 
+            /*
+            서브쿼리
+             */
+            System.out.println("====서브쿼리1");
+            List<Member> result13 = em.createQuery("select m from Member m where m.age > (select avg(m2.age) from Member m2)",Member.class)
+                    .getResultList();
+
+            System.out.println("====서브쿼리2");
+            //TODO: 에러 해결
+//            List<Member> result14 = em.createQuery("select m from Member m where (select count(o) from Order o where m=o.member)>0",Member.class)
+//                    .getResultList();
+
 
             // 쓰기지연 sql 저장소에 모든 sql 실행
             tx.commit(); // 트랜섹션 요청 실행
