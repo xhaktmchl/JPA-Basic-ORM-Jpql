@@ -19,14 +19,32 @@ public class JpaMain {
             team.setName("team1");
             em.persist(team);
 
+            Team team2 = new Team();
+            team2.setName("team2");
+            em.persist(team2);
+
             System.out.println("====1");
             Member m1 = new Member();
             m1.setUsername("member1");
             m1.setAge(20);
             m1.setTeam(team);
             m1.setType(MemberType.ADMIN);
-
             em.persist(m1);
+
+            Member m2 = new Member();
+            m2.setUsername("member2");
+            m2.setAge(20);
+            m2.setTeam(team);
+            m2.setType(MemberType.ADMIN);
+            em.persist(m2);
+
+            Member m3 = new Member();
+            m3.setUsername("member3");
+            m3.setAge(20);
+            m3.setTeam(team2);
+            m3.setType(MemberType.ADMIN);
+            em.persist(m3);
+
             System.out.println("====1");
             em.flush();
             em.clear();
@@ -191,6 +209,31 @@ public class JpaMain {
                     .getResultList();
             for(String str: result16){
                 System.out.println("=="+str);
+            }
+
+            /*
+            페치조인
+             */
+            // 기존 조인쿼리: 지연로딩처럼 연관 엔티티는 프록시 객체로 불러오고 메소드 요청시마다 쿼리를 날렸음.
+            // 페치조인 한방쿼리: 페치조인을 하면 즉시로딩처럼 쿼리가 나갈때 관련 실제 엔티티까지 다 불러옴
+            System.out.println("====페치조인");
+            List<Member> result17 = em.createQuery("select m from Member m join fetch m.team",Member.class)
+                    .getResultList();
+            for(Member m: result17){
+                System.out.println("=="+m.getUsername()+" "+m.getTeam().getName());
+            }
+
+            /*
+            일대다 페치조인: 데이터 갯수가 다에 맞게 뻥튀기된다.
+             */
+            System.out.println("====일대다 페치조인");
+            List<Team> result18 = em.createQuery("select t from Team t join fetch t.members", Team.class)
+                    .getResultList();
+            for(Team t: result18){
+                System.out.println("=="+t.getName());
+                for(Member m: t.getMembers()){
+                    System.out.println("==member:"+m.getUsername());
+                }
             }
 
 
