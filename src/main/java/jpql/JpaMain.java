@@ -183,6 +183,18 @@ public class JpaMain {
             }
 
 
+            /*
+            jpql함수
+             */
+            System.out.println("====jpql함수");
+            List<String> result16 = em.createQuery("select concat('a','b') from Member m",String.class)
+                    .getResultList();
+            for(String str: result16){
+                System.out.println("=="+str);
+            }
+
+
+
 
 
             // 쓰기지연 sql 저장소에 모든 sql 실행
