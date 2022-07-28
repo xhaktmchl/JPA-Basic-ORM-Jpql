@@ -24,6 +24,7 @@ public class JpaMain {
             m1.setUsername("member1");
             m1.setAge(20);
             m1.setTeam(team);
+            m1.setType(MemberType.ADMIN);
 
             em.persist(m1);
             System.out.println("====1");
@@ -151,6 +152,37 @@ public class JpaMain {
             //TODO: 에러 해결
 //            List<Member> result14 = em.createQuery("select m from Member m where (select count(o) from Order o where m=o.member)>0",Member.class)
 //                    .getResultList();
+
+
+            /*
+            JPQL타입 표현
+             */
+            System.out.println("====JPQL타입 표현");
+            List<Object[]> result14 = em.createQuery("select m.username, 'HELLO', true from Member m " +
+                    "where m.type = jpql.MemberType.ADMIN and m.username is not null and m.age between 0 and 100")
+                    .getResultList();
+            for(Object[] o : result14){
+                System.out.println("object: "+o[0]);
+                System.out.println("object: "+o[1]);
+                System.out.println("object: "+o[2]);
+            }
+
+            /*
+            JPQL case조건식
+             */
+            System.out.println("====JPQL case조건식");
+            List<String> result15 = em.createQuery("select " +
+                    "case when m.age <= 10 then '학생요금' " +
+                    "when m.age >50 then '노인요금' " +
+                    "else '보통요금' " +
+                    "end " +
+                    "from Member m", String.class)
+                    .getResultList();
+            for(String str: result15){
+                System.out.println("요금: "+str);
+            }
+
+
 
 
             // 쓰기지연 sql 저장소에 모든 sql 실행

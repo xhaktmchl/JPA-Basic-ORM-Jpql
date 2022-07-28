@@ -16,6 +16,9 @@ public class Member {
     private String username;
     private int age;
 
+    @Enumerated(EnumType.STRING)
+    private MemberType type;
+
 
     /*연관간계 편의 메서드*/
 
@@ -54,5 +57,13 @@ public class Member {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public MemberType getType() {
+        return type;
+    }
+
+    public void setType(MemberType type) {
+        this.type = type;
     }
 }
