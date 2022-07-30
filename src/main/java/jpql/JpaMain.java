@@ -237,6 +237,29 @@ public class JpaMain {
             }
 
 
+            /*
+            엔티티 직접 조회
+             */
+            // 엔티티를 직접 조회하더라도 PK 로 쿼리가 날라간다.
+            System.out.println("====엔티티 직접 조회");
+            List<Member> result19 = em.createQuery("select m from Member m where m = :member")
+                    .setParameter("member", m1)
+                    .getResultList();
+            for(Member m: result19){
+                System.out.println("=="+m.getUsername());
+            }
+
+            //ㅇ
+            System.out.println("====엔티티 직접 조회2");
+            List<Member> result20 = em.createQuery("select m from Member m where m.team = :team")
+                    .setParameter("team", team)
+                    .getResultList();
+            for(Member m: result20){
+                System.out.println("=="+m.getUsername());
+            }
+
+
+
 
 
 

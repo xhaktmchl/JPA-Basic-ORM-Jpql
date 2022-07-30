@@ -19,6 +19,8 @@
             <property name="hibernate.use_sql_comments"  value="true"/>
             <!-- 애플리케이션 실행 시점에 데이터베이스 테이블 자동 생성 옵션 , create,update,valid,none 속성 있음-->
             <property name="hibernate.hbm2ddl.auto" value="create" />
+            <!-- 페치조인 조회 시 n+1 문제 해결을 위한 설정, 조회 시 테입르 갯수 만큼만 조회 -->
+            <property name="hibernate.default_batch_fetch_size" value="100"/>
             <!--            &lt;!&ndash; JPA 표준에 맞춘 새로운 키 생성 전략 사용 &ndash;&gt;-->
             <!--            <property name="hibernate.id.new_generator_mappings" value="true"/>-->
             <!--            &lt;!&ndash; 이름 매핑 전략 설정 - 자바의 카멜 표기법을 테이블의 언더스코어 표기법으로 매핑-->
