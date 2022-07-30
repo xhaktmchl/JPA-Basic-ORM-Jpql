@@ -251,10 +251,22 @@ public class JpaMain {
 
             //ㅇ
             System.out.println("====엔티티 직접 조회2");
-            List<Member> result20 = em.createQuery("select m from Member m where m.team = :team")
+            List<Member> result20 = em.createQuery("select m from Member m where m.team = :team",Member.class)
                     .setParameter("team", team)
                     .getResultList();
             for(Member m: result20){
+                System.out.println("=="+m.getUsername());
+            }
+
+
+            /*
+            Named 쿼리 : 쿼리를 미리 정의해 놓고 호출해서 쓸 수 있다
+             */
+            System.out.println("====Named 쿼리");
+            List<Member> result21 = em.createNamedQuery("Member.findByUsername",Member.class)
+                    .setParameter("username", m1.getUsername())
+                    .getResultList();
+            for(Member m: result21){
                 System.out.println("=="+m.getUsername());
             }
 
