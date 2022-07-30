@@ -45,6 +45,12 @@ public class JpaMain {
             m3.setType(MemberType.ADMIN);
             em.persist(m3);
 
+            Product product1 = new Product();
+            product1.setStockAmount(5);
+            product1.setName("product1");
+            product1.setPrice(1000);
+            em.persist(product1);
+
             System.out.println("====1");
             em.flush();
             em.clear();
@@ -269,6 +275,16 @@ public class JpaMain {
             for(Member m: result21){
                 System.out.println("=="+m.getUsername());
             }
+
+
+            /*
+            벌크연산: 한방쿼리처럼 다수의 데이터를 업데이트,삭제 하는 쿼리
+             */
+            System.out.println("====벌크연산: 한방쿼리처럼 다수의 데이터를 업데이트,삭제 하는 쿼리");
+            int result22 = em.createQuery("update Product p set p.price = p.price * 2 where p.stockAmount < :stockAmount")
+                    .setParameter("stockAmount",10)
+                    .executeUpdate();
+            System.out.println("=="+result22);
 
 
 
